@@ -4,6 +4,7 @@ import com.alibaba.nacos.api.exception.NacosException;
 import com.dcf.api.HelloService;
 import com.dcf.client.handler.RpcResponseMessageHandler;
 import com.dcf.client.util.ChannelUtil;
+import com.dcf.common.annotation.RpcService;
 import com.dcf.common.message.RpcRequestMessage;
 import com.dcf.common.protocol.SequenceIdGenerator;
 import io.netty.channel.Channel;
@@ -46,7 +47,15 @@ public class RpcClient {
                     args
             );
             // 2. 将消息对象发送出去
-            Channel channel = ChannelUtil.getChannel("rpc_server1");
+            // 获取rpc服务名
+            String serviceName = null;
+            if(interfaces[0].isAnnotationPresent(RpcService.class)){
+                RpcService annotation = interfaces[0].getAnnotation(RpcService.class);
+                serviceName = annotation.serviceName();
+            }else{
+                throw new RuntimeException("所调用的接口不是rpc服务");
+            }
+            Channel channel = ChannelUtil.getChannel(serviceName);
             channel.writeAndFlush(msg);
 
             // 3. 准备一个空 Promise 对象，来接收结果
