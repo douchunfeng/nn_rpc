@@ -12,6 +12,7 @@ import io.netty.util.concurrent.DefaultPromise;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Proxy;
+import java.nio.channels.Selector;
 
 @Slf4j
 public class RpcClient {
@@ -58,7 +59,7 @@ public class RpcClient {
             Channel channel = ChannelUtil.getChannel(serviceName);
             channel.writeAndFlush(msg);
 
-            // 3. 准备一个空 Promise 对象，来接收结果
+            // 3. 准备一个空 Promise 对象，来接收结果      the EventExecutor which is used to notify the promise once it is complete.
             DefaultPromise<Object> promise = new DefaultPromise<>(channel.eventLoop());
             RpcResponseMessageHandler.PROMISES.put(sequenceId, promise);
 

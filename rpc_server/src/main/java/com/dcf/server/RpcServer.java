@@ -28,8 +28,8 @@ public class RpcServer {
         NioEventLoopGroup boss = new NioEventLoopGroup();
         NioEventLoopGroup worker = new NioEventLoopGroup();
         LoggingHandler LOGGING_HANDLER = new LoggingHandler(LogLevel.DEBUG);
-        RpcRequestMessageHandler RPC_HANDLER = new RpcRequestMessageHandler();
         RpcMessageCodec MESSAGE_CODEC = new RpcMessageCodec();
+        RpcRequestMessageHandler RPC_HANDLER = new RpcRequestMessageHandler();
         try {
             ServerBootstrap serverBootstrap = new ServerBootstrap();
             serverBootstrap.channel(NioServerSocketChannel.class);
